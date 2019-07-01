@@ -158,3 +158,7 @@ time = timeEnd - timeBeginning
 print(timeBeginning)
 print(timeEnd)
 print(time)
+
+f = open("stats.csv", 'a')
+f.write(str(N_cities) + "," + str(time) + "," + str(N_camions) + "\n")
+f.close()
