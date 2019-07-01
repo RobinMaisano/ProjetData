@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math as math
 import scipy as sy
+import time as time
 
 '''
 Class that contains datas from a city
@@ -16,7 +17,6 @@ class City:
 Calculate distance between two cities
 '''
 def distance(currentCity, nextCity):
-
         distX = int(currentCity.x) - int(nextCity.x)
         distY = int(currentCity.y) - int(nextCity.y)
         dist = math.sqrt((distX**2) + (distY**2))
@@ -33,6 +33,7 @@ def ConnectCities(city1, city2):
 # size = 10
 # x = [10, 83, 64, 44, 8, 34, 86, 12, 70, 87, 52, 24, 29, 66, 40]
 # y = [34, 90, 43, 72, 71, 28, 20, 10, 70, 54, 90, 93, 48, 16, 10]
+
 
 xi = []
 yi = []
