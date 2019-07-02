@@ -91,9 +91,12 @@ def dispatcheur(citiesNumberList, timeList, truckNumberList):
 
 
 def stats (citiesNumberList, timeList, title):
-    logToFile("\n\nStatistics with ", title) # Write title to logfile
-    logToFile("\ncitiesNumberList : ", str(citiesNumberList))
-    logToFile("\ntimeList : ", str(timeList))
+    logToFile("Statistics with : ", title,"\n\n<h1 align=\"center\">","</h1>") # Write title to logfile
+    reportFile.write("</h1>")
+    logToFile("\ncitiesNumberList : ", str(citiesNumberList), "<br>")
+    logToFile("\ntimeList : ", str(timeList), "<br>")
+    logToFile("\nThe lists are composed of ", str(len(citiesNumberList)), "<br>")
+    reportFile.write(" data <br>\n")
 
     graph(citiesNumberList, timeList, title) # Generate the scatter graph with the regression line
     medianTemp = median(timeList) # Calculate the Median
@@ -103,22 +106,35 @@ def stats (citiesNumberList, timeList, title):
     q3temp = np.percentile(np.asarray(timeList), 75) # Calculate the third quartile
     varianceTemp = np.var(np.asarray(timeList), 0) # Calculate the variance
 
-    logToFile("\nThe median is : ", str(medianTemp)) # Log all the statistics
-    logToFile("\nThe mean is : ", str(meanTemp))
-    logToFile("\nThe range is : ", str(rangeTemp))
-    logToFile("\nThe first quartile is : ", str(q1temp))
-    logToFile("\nThe third quartile is : ", str(q3temp))
-    logToFile("\nThe variance is : ", str(varianceTemp))
+    logToFile("\nThe median is : ", str(medianTemp), "<br>") # Log all the statistics
+    logToFile("\nThe mean is : ", str(meanTemp), "<br>")
+    logToFile("\nThe range is : ", str(rangeTemp), "<br>")
+    logToFile("\nThe first quartile is : ", str(q1temp), "<br>")
+    logToFile("\nThe third quartile is : ", str(q3temp), "<br>")
+    logToFile("\nThe variance is : ", str(varianceTemp), "<br>")
 
+    reportFile.write("\n<p align=\"center\">\n\t<IMG src=\"")
+    reportFile.write(title)
+    reportFile.write(".png\" alt=\"")
+    reportFile.write(title)
+    reportFile.write("\" border=\"0\" width=\"562\" height=\"452\">\n</p>")
 
-def logToFile(string, value):
+def logToFile(string, value, firstHtmlTag = None, lastHtmlTag = None):
+    if firstHtmlTag is not None:
+        reportFile.write(firstHtmlTag)
     reportFile.write(string)
     reportFile.write(value)
+    if lastHtmlTag is not None:
+        reportFile.write(lastHtmlTag)
 
+def initReportFile():
+    reportFile.write("<!DOCTYPE html>\n<html>\n<head lang=\"en\">\n\t<meta charset=\"UTF-8\">\n"
+                     "\t<title>Report of statistics</title>\n</head>\n<body>")
+    reportFile.write("All the statistics have been done on the time needed to resolve the shortest path, "
+                     "not on the number of cities <br>")
 
-reportFile = open("Report.txt", "w")
-reportFile.write("All the statistics have been done on the time needed to resolve the shortest path, "
-                 "not on the number of cities")
+reportFile = open("test.html", "w")
+initReportFile()
 citiesNumberList, timeList, truckNumberList = openCSV('dataset2.csv')
 stats(citiesNumberList,timeList,"Global stats")
 dispatcheur(citiesNumberList, timeList, truckNumberList)
