@@ -48,9 +48,9 @@ def graph(X, Y, title):
 
     plt.title(title,fontsize=10)
     plt.xlabel('Number of cities')
-    plt.ylabel('Time needed to resolve shortest path')
+    plt.ylabel('Time needed to resolve shortest path (in seconds)')
 
-    plt.savefig(title + ".png", bbox_inches='tight')
+    plt.savefig("report/" + title + ".png", bbox_inches='tight')
 #    plt.show()
     plt.close()
 
@@ -65,9 +65,9 @@ def openCSV(filename):
             secondRow = row[1]
             thirdRow = row[2]
 
-            citiesNumberList.append(int(firstRow)) #Put all the data in lists
-            timeList.append(int(secondRow))
-            truckNumberList.append((int(thirdRow)))
+            citiesNumberList.append(float(firstRow)) #Put all the data in lists
+            timeList.append(float(secondRow))
+            truckNumberList.append((float(thirdRow)))
 
         print(citiesNumberList, "\n", timeList, "\n", truckNumberList)
         return citiesNumberList, timeList, truckNumberList
@@ -133,7 +133,7 @@ def initReportFile():
     reportFile.write("All the statistics have been done on the time needed to resolve the shortest path, "
                      "not on the number of cities <br>")
 
-reportFile = open("report.html", "w")
+reportFile = open("report/report.html", "w")
 initReportFile()
 citiesNumberList, timeList, truckNumberList = openCSV('stats.csv')
 stats(citiesNumberList,timeList,"Global stats")
