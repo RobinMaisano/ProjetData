@@ -133,9 +133,9 @@ def initReportFile():
     reportFile.write("All the statistics have been done on the time needed to resolve the shortest path, "
                      "not on the number of cities <br>")
 
-reportFile = open("test.html", "w")
+reportFile = open("report.html", "w")
 initReportFile()
-citiesNumberList, timeList, truckNumberList = openCSV('dataset2.csv')
+citiesNumberList, timeList, truckNumberList = openCSV('stats.csv')
 stats(citiesNumberList,timeList,"Global stats")
 dispatcheur(citiesNumberList, timeList, truckNumberList)
 reportFile.close()
