@@ -40,28 +40,30 @@ def GreedyAlgorithm (cities, start):
     remainingCities = cities.copy() # Copying list of every city
 
     current = start
+    totalDist = 0
 
     # Calculate distance from current to each unvisited city
     # Save the shortest
     # Shortest become current, popped from remaining cities and added to visited
     # Do it while there still remain unvisited cities 
     while len(remainingCities) > 0:
-            distMin = 0
-            for city in remainingCities:
-                    newDist = distance(current, city)
-                    if distMin == 0:
-                            distMin = newDist
-                            saved = city
-                    else:
-                            if distMin > newDist:
-                                    distMin = newDist
-                                    saved = city
-            visitedCities.append(saved)
-            remainingCities.remove(saved)
-            current = saved
+        distMin = 0
+        for city in remainingCities:
+                newDist = distance(current, city)
+                if distMin == 0:
+                        distMin = newDist
+                        saved = city
+                else:
+                        if distMin > newDist:
+                                distMin = newDist
+                                saved = city
+        visitedCities.append(saved)
+        remainingCities.remove(saved)
+        current = saved
+        totalDist += distMin
 
     visitedCities.append(start) # Add the start to make it a cycle
-    return visitedCities
+    return visitedCities, totalDist
 
 timeBeginning = time.process_time()
 
@@ -133,6 +135,8 @@ coordcluster = c_[coord,clusters] # Concat. tab + N° de cluster
 
 selected = []
 
+maximalDistance = 0
+
 for i in range(N_camions):
     selected.clear()
 
@@ -140,7 +144,8 @@ for i in range(N_camions):
         if (line[2] == i):
             selected.append(City(line[0], line[1]))
 
-    path = GreedyAlgorithm(selected, start)
+    path, dist = GreedyAlgorithm(selected, start)
+    maximalDistance += dist
 
     print("\nPath in cluster => " + str(i))
     for city in path:
@@ -152,12 +157,15 @@ for i in range(N_camions):
         plt.plot(path[i].x, path[i].y, 'bo')
         ConnectCities(path[i], path[i+1])
         
+
 timeEnd = time.process_time()
 
 time = timeEnd - timeBeginning
 print(timeBeginning)
 print(timeEnd)
 print(time)
+
+print("Maximal distance" + str(maximalDistance))
 
 f = open("stats.csv", 'a')
 f.write(str(N_cities) + "," + str(time) + "," + str(N_camions) + "\n")
