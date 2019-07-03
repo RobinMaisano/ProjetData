@@ -108,7 +108,7 @@ if len(sys.argv) < 3:
 
 else:
     mapPath = sys.argv[1]
-    N_trucks = sys.argv[2]
+    N_trucks = int(sys.argv[2])
 
 # Time start
 timeBeginning = time.process_time()
