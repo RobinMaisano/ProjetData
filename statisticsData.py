@@ -60,6 +60,7 @@ def graph(x, y, title):
 #    plt.show()
     plt.close()
 
+
 # This method read the csv stats file
 def open_csv(filename):
     with open(filename) as csvFile:
