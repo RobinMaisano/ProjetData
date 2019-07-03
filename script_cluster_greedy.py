@@ -96,7 +96,7 @@ def read_map(filename):
             x.append(int(x_row))
             y.append(int(y_row))
 
-        print(x, "\n", y)
+        # print(x, "\n", y)
         return x, y
 
 
@@ -156,9 +156,9 @@ for i in range(N_trucks):
     path, dist = greedy_algorithm(selected, start)
     maximalDistance += dist
 
-    print("\nPath in cluster => " + str(i))
-    for city in path:
-        print(str(city.x) + "; " + str(city.y))
+    # print("\nPath in cluster => " + str(i))
+    # for city in path:
+        # print(str(city.x) + "; " + str(city.y))
 
     for j in range(len(path)):
         if j == len(path) - 1:
@@ -170,11 +170,11 @@ for i in range(N_trucks):
 timeEnd = time.process_time()
 
 time = timeEnd - timeBeginning
-print(timeBeginning)
-print(timeEnd)
-print(time)
+# print(timeBeginning)
+# print(timeEnd)
+# print(time)
 
-print("Maximal distance" + str(maximalDistance))
+# print("Maximal distance" + str(maximalDistance))
 
 f = open("stats.csv", 'a')
 f.write(str(len(cities)) + "," + str(time) + "," + str(N_trucks) + "\n")
