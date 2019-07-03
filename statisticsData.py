@@ -5,46 +5,52 @@ import numpy as np
 import csv
 from statistics import median, mean, mode
 
-def graph(X, Y, title):
-    #----------------------------------------------------------------------------------------#
+
+def graph(x, y, title):
+    # ----------------------------------------------------------------------------------------#
     # Step 1: training data
 
-    maxX = max(X)
-    maxY = max(Y)
+    max_x = max(x)
+    max_y = max(y)
 
-    X = np.asarray(X)
-    Y = np.asarray(Y)
+    x = np.asarray(x)
+    y = np.asarray(y)
 
-    X = X[:,np.newaxis]
-    Y = Y[:,np.newaxis]
+    x = x[:, np.newaxis]
+    y = y[:, np.newaxis]
 
-    plt.scatter(X,Y)
+    plt.scatter(x, y)
 
-    #----------------------------------------------------------------------------------------#
+    # ----------------------------------------------------------------------------------------#
     # Step 2: define and train a model
 
     model = linear_model.LinearRegression()
-    model.fit(X, Y)
+    model.fit(x, y)
 
+    model_coef = (str(model.coef_)).replace("[", "").replace("]", "")
+    model_intercept = (str(model.intercept_)).replace("[", "").replace("]", "")
     print(model.coef_, model.intercept_)
-    logToFile("\nThe coefficient of the regression line is : ", str(model.coef_))
-    logToFile("\nThe intersection point between the regression line and the y axis is : ", str(model.intercept_))
-    #----------------------------------------------------------------------------------------#
+
+    log_to_file("The equation of the linear regression line is y = ", str(model_coef), "<br>")
+    log_to_file("x + (", str(model_intercept))
+    reportFile.write(")<br>")
+
+    # ----------------------------------------------------------------------------------------#
     # Step 3: prediction
 
     x_new_min = 0.0
-    x_new_max = (maxX + 0.2*maxX)
+    x_new_max = (max_x + 0.2 * max_x)
 
-    X_NEW = np.linspace(x_new_min, x_new_max, 100)
-    X_NEW = X_NEW[:,np.newaxis]
+    x_new = np.linspace(x_new_min, x_new_max, 100)
+    x_new = x_new[:, np.newaxis]
 
-    Y_NEW = model.predict(X_NEW)
+    y_new = model.predict(x_new)
 
-    plt.plot(X_NEW, Y_NEW, color='coral', linewidth=3)
+    plt.plot(x_new, y_new, color='coral', linewidth=3)
 
     plt.grid()
     plt.xlim(x_new_min,x_new_max)
-    plt.ylim(0,(maxY + 0.2*maxY))
+    plt.ylim(0, (max_y + 0.2 * max_y))
 
     plt.title(title,fontsize=10)
     plt.xlabel('Number of cities')
@@ -54,64 +60,66 @@ def graph(X, Y, title):
 #    plt.show()
     plt.close()
 
-def openCSV(filename):
-    with open(filename) as csvfile:
-        readCSV = csv.reader(csvfile, delimiter=',')
-        citiesNumberList = []
-        timeList = []
-        truckNumberList = []
-        for row in readCSV: #Read line by line
-            firstRow = row[0]
-            secondRow = row[1]
-            thirdRow = row[2]
+# This method read the csv stats file
+def open_csv(filename):
+    with open(filename) as csvFile:
+        read_csv_file = csv.reader(csvFile, delimiter=',')
+        cities_number_list = []
+        time_list = []
+        truck_number_list = []
+        for row in read_csv_file: # Read line by line
+            first_row = row[0]
+            second_row = row[1]
+            third_row = row[2]
 
-            citiesNumberList.append(float(firstRow)) #Put all the data in lists
-            timeList.append(float(secondRow))
-            truckNumberList.append((float(thirdRow)))
+            cities_number_list.append(float(first_row)) # Put all the data in lists
+            time_list.append(float(second_row))
+            truck_number_list.append((float(third_row)))
 
-        print(citiesNumberList, "\n", timeList, "\n", truckNumberList)
-        return citiesNumberList, timeList, truckNumberList
+        print(cities_number_list, "\n", time_list, "\n", truck_number_list)
+        return cities_number_list, time_list, truck_number_list
 
-def dispatcheur(citiesNumberList, timeList, truckNumberList):
 
-    #This method, generate statistics for all different number of truck used
-    sortedTruckList = sorted(list(dict.fromkeys(truckNumberList))) #Sort list and remove duplicates
-    print("sortedTruckList :", sortedTruckList)
-    for truckNumber in sortedTruckList: # For all different number of truck used ...
-        tempCitiesList = []
-        tempTimeList = []
-        tempTruckList = []
-        for i in range(len(truckNumberList)): # Get the cities and the time needed ...
-            if truckNumberList[i] == truckNumber:
-                tempCitiesList.append(citiesNumberList[i])
-                tempTimeList.append(timeList[i])
-                tempTruckList.append(truckNumberList[i])
+# This method generate statistics for all different number of truck used
+def statistic_creator(cities_number_list, time_list, truck_number_list):
+    sorted_truck_list = sorted(list(dict.fromkeys(truck_number_list))) # Sort list and remove duplicates
+    print("sortedTruckList :", sorted_truck_list)
+    for truckNumber in sorted_truck_list: # For all different number of truck used
+        temp_cities_list = []
+        temp_time_list = []
+        temp_truck_list = []
+        for i in range(len(truck_number_list)): # Get the cities and the time needed
+            if truck_number_list[i] == truckNumber:
+                temp_cities_list.append(cities_number_list[i])
+                temp_time_list.append(time_list[i])
+                temp_truck_list.append(truck_number_list[i])
         title = str(truckNumber) + " Trucks"
-        stats(tempCitiesList, tempTimeList, title) # ... And create stats
+        stats(temp_cities_list, temp_time_list, title) # And create stats
 
 
-def stats (citiesNumberList, timeList, title):
-    logToFile("Statistics with : ", title,"\n\n<h1 align=\"center\">","</h1>") # Write title to logfile
+# This method generate statistics for a specific number of truck used
+def stats (cities_number_list, time_list, title):
+    log_to_file("Statistics with : ", title, "\n\n<h1 align=\"center\">", "</h1>") # Write title to logfile
     reportFile.write("</h1>")
-    logToFile("\ncitiesNumberList : ", str(citiesNumberList), "<br>")
-    logToFile("\ntimeList : ", str(timeList), "<br>")
-    logToFile("\nThe lists are composed of ", str(len(citiesNumberList)), "<br>")
+    # log_to_file("\ncities_number_list : ", str(citiesNumberList), "<br>")
+    # log_to_file("\ntime_list : ", str(timeList), "<br>")
+    log_to_file("\nThe lists are composed of ", str(len(cities_number_list)), "<br>")
     reportFile.write(" data <br>\n")
 
-    graph(citiesNumberList, timeList, title) # Generate the scatter graph with the regression line
-    medianTemp = median(timeList) # Calculate the Median
-    meanTemp = mean(timeList) # Calculate the Mean
-    rangeTemp = (max(timeList) - min(timeList)) # Calculate the range
-    q1temp = np.percentile(np.asarray(timeList), 25) # Calculate the first quartile
-    q3temp = np.percentile(np.asarray(timeList), 75) # Calculate the third quartile
-    varianceTemp = np.var(np.asarray(timeList), 0) # Calculate the variance
+    graph(cities_number_list, time_list, title) # Generate the scatter graph with the regression line
+    median_temp = median(time_list) # Calculate the Median
+    mean_temp = mean(time_list) # Calculate the Mean
+    range_temp = (max(time_list) - min(time_list)) # Calculate the range
+    q1temp = np.percentile(np.asarray(time_list), 25) # Calculate the first quartile
+    q3temp = np.percentile(np.asarray(time_list), 75) # Calculate the third quartile
+    variance_temp = np.var(np.asarray(time_list), 0) # Calculate the variance
 
-    logToFile("\nThe median is : ", str(medianTemp), "<br>") # Log all the statistics
-    logToFile("\nThe mean is : ", str(meanTemp), "<br>")
-    logToFile("\nThe range is : ", str(rangeTemp), "<br>")
-    logToFile("\nThe first quartile is : ", str(q1temp), "<br>")
-    logToFile("\nThe third quartile is : ", str(q3temp), "<br>")
-    logToFile("\nThe variance is : ", str(varianceTemp), "<br>")
+    log_to_file("\nThe median is : ", str(median_temp), "<br>") # Log all the statistics
+    log_to_file("\nThe mean is : ", str(mean_temp), "<br>")
+    log_to_file("\nThe range is : ", str(range_temp), "<br>")
+    log_to_file("\nThe first quartile is : ", str(q1temp), "<br>")
+    log_to_file("\nThe third quartile is : ", str(q3temp), "<br>")
+    log_to_file("\nThe variance is : ", str(variance_temp), "<br>")
 
     reportFile.write("\n<p align=\"center\">\n\t<IMG src=\"")
     reportFile.write(title)
@@ -119,23 +127,27 @@ def stats (citiesNumberList, timeList, title):
     reportFile.write(title)
     reportFile.write("\" border=\"0\" width=\"562\" height=\"452\">\n</p>")
 
-def logToFile(string, value, firstHtmlTag = None, lastHtmlTag = None):
-    if firstHtmlTag is not None:
-        reportFile.write(firstHtmlTag)
+
+def log_to_file(string, value, first_html_tag = None, last_html_tag = None):
+    if first_html_tag is not None:
+        reportFile.write(first_html_tag)
     reportFile.write(string)
     reportFile.write(value)
-    if lastHtmlTag is not None:
-        reportFile.write(lastHtmlTag)
+    if last_html_tag is not None:
+        reportFile.write(last_html_tag)
 
-def initReportFile():
+
+# Write the beginning of the HTML file
+def init_report_file():
     reportFile.write("<!DOCTYPE html>\n<html>\n<head lang=\"en\">\n\t<meta charset=\"UTF-8\">\n"
                      "\t<title>Report of statistics</title>\n</head>\n<body>")
     reportFile.write("All the statistics have been done on the time needed to resolve the shortest path, "
                      "not on the number of cities <br>")
 
+
 reportFile = open("report/report.html", "w")
-initReportFile()
-citiesNumberList, timeList, truckNumberList = openCSV('stats.csv')
-stats(citiesNumberList,timeList,"Global stats")
-dispatcheur(citiesNumberList, timeList, truckNumberList)
+init_report_file()
+citiesNumberList, timeList, truckNumberList = open_csv('stats.csv')
+stats(citiesNumberList, timeList, "Global stats")
+statistic_creator(citiesNumberList, timeList, truckNumberList)
 reportFile.close()
