@@ -29,7 +29,7 @@ def graph(x, y, title):
 
     model_coef = (str(model.coef_)).replace("[", "").replace("]", "")
     model_intercept = (str(model.intercept_)).replace("[", "").replace("]", "")
-    print(model.coef_, model.intercept_)
+    print("y = " + model_coef + "x + (" + model_intercept + ")")
 
     log_to_file("The equation of the linear regression line is y = ", str(model_coef), "<br>")
     log_to_file("x + (", str(model_intercept))
