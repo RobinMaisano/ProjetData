@@ -50,6 +50,9 @@ def listToMatrix(x, y):
         citiesList.append(City(x[j], y[j], j))
         print(citiesList[j].name)'''
 
-mapGenerator(200, 500, "maps/map02.csv")
-x, y = readMap("maps/map1.csv")
+cities = 0
+for i in range(50):
+    cities = cities + 100
+    mapGenerator(cities, 2000, "maps/map"+ str(cities) +".csv")
+#x, y = readMap("maps/map1.csv")
 #listToMatrix(x, y)
