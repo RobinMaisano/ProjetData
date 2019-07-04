@@ -102,13 +102,10 @@ coord = c_[xi,yi]
 
 ##############################
 # Uncomment to plot
-# fig, ax = plt.subplots(1, 1, figsize=(5, 5))
-# ax.plot(coord[:, 0], coord[:, 1], '.')
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+ax.plot(coord[:, 0], coord[:, 1], '.')
 
 ##############################
-# On utilise un algorithme très utilisé :
-# `KMeans <http://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html>`_.
-
 km = KMeans(n_clusters=N_camions)
 # km.fit(X)
 km.fit(coord)
@@ -119,10 +116,13 @@ km.fit(coord)
 
 ##############################
 # Uncomment to plot
-# cmap = plt.cm.get_cmap("hsv", km.cluster_centers_.shape[0]) #Création de la ColorMap
-# fig, ax = plt.subplots(1, 1, figsize=(5, 5)) #Création du repère
-# colors = [cmap(i) for i in km.fit_predict(coord)] # Création Clustered Color Map
-# ax.scatter(coord[:, 0], coord[:, 1], c=colors)
+cmap = plt.cm.get_cmap("hsv", km.cluster_centers_.shape[0]) #Création de la ColorMap
+fig, ax = plt.subplots(1, 1, figsize=(5, 5)) #Création du repère
+colors = [cmap(i) for i in km.fit_predict(coord)] # Création Clustered Color Map
+ax.scatter(coord[:, 0], coord[:, 1], c=colors)
+
+# print(cmap)
+# print(colors)
 
 # print("\nPrint End")
 clusters = km.fit_predict(coord) # Regroupement par cluster en partant des cluster_centers
