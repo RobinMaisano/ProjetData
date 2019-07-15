@@ -134,9 +134,9 @@ km.fit(coord)
 
 ##############################
 # Uncomment to plot
-# cmap = plt.cm.get_cmap("hsv", km.cluster_centers_.shape[0]) #ColorMap creation
+cmap = plt.cm.get_cmap("hsv", km.cluster_centers_.shape[0]) #ColorMap creation
 # fig, ax = plt.subplots(1, 1, figsize=(5, 5)) # Axis creation
-# colors = [cmap(i) for i in km.fit_predict(coord)] # Cluster color map
+colors = [cmap(i) for i in km.fit_predict(coord)] # Cluster color map
 # ax.scatter(coord[:, 0], coord[:, 1], c=colors)
 
 clusters = km.fit_predict(coord)  # Group points in clusters from cluster centers

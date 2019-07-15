@@ -8,6 +8,8 @@ import time as time
 '''
 Class that contains datas from a city
 '''
+
+
 class City:
         def __init__(self, x=0, y=0, name="null"):
                 self.x = x
@@ -17,6 +19,8 @@ class City:
 '''
 Calculate distance between two cities
 '''
+
+
 def distance (currentCity, nextCity):
         distX = int(currentCity.x) - int(nextCity.x)
         distY = int(currentCity.y) - int(nextCity.y)
@@ -27,6 +31,8 @@ def distance (currentCity, nextCity):
 '''
 Connect two cities on the map
 '''
+
+
 def ConnectCities(city1, city2):
         plt.plot([int(city1.x), int(city2.x)],[int(city1.y), int(city2.y)], 'r')
 

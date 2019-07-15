@@ -69,7 +69,8 @@ Tests sur datasets connus
 Demain :
 
 Fantou
-Script montée en charge
+XX Script montée en charge
+Notebook
 Plot Cluster + Graphique en moins moche
 
 Gilly
